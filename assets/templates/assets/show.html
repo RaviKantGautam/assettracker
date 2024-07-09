@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+  <div class="container">
+    <div class="row">
+    <div class="col-md-6 offset-md-3 bg-white p-5 mt-5 border-rounded shadow">
+        <div>
+            <a href="{% url 'asset_list' %}" class="btn btn-secondary">Back</a>
+        </div>
+        <hr>
+        {% if messages %}
+            {% include "_message_.html" %}
+        {% endif %}
+      <table class="table">
+        <tr>
+          <th>Name</th>
+          <td>{{ object.name }}</td>
+        </tr>
+        <tr>
+          <th>Code</th>
+          <td>{{ object.code }}</td>
+        </tr>
+        <tr>
+          <th>Asset Type</th>
+          <td>{{ object.asset_type.name }}</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td>
+            {% if object.is_active %}
+              <span class="text-primary">Active</span>
+            {% else %}
+              <span class="text-danger">Inactive</span>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th>Images Uploaded</th>
+          <td>
+            {% for img in object.images.all %}
+              <img src="{{img.image.url}}" alt="{{ img.name }}" class="img-thumbnail" style="width: 100px; height: 100px;">
+            {% endfor %}
+          </td>
+        </tr>
+      </table>
+      
+      <div class="d-flex justify-content-between">
+        <div>
+            <a href="{% url 'asset_update' object.id %}" class="btn btn-success">Edit</a>
+        </div>
+        <div>
+          {% csrf_token %}
+            <button id="delete-btn" class="btn btn-danger">Delete</button>
+        </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+    document.getElementById('delete-btn').addEventListener('click', function() {
+        if (confirm('Are you sure?')) {
+            // Create an AJAX request to perform the delete operation
+            var assetId = {{ object.id }};
+            var url = "{% url 'asset_detail' object.id %}";
+            var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-CSRFToken", csrfToken);
+
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                window.location.href = "{% url 'asset_list' %}";
+                // Handle successful deletion
+                // You may want to redirect or update the UI accordingly
+              } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                alert('An error occurred while deleting the asset');
+                // Handle error
+                // You may want to display an error message or handle the error in some way
+              }
+            };
+
+            xhr.send(JSON.stringify({ assetId: assetId }));
+        }
+    });
+</script>
+{%endblock extrajs %}

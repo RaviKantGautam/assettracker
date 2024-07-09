@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 bg-white p-5 mt-5 border-rounded shadow">
+            <h2>Create Asset</h2>
+            {% if messages %}
+                {% include "_message_.html" %}
+            {% endif %}
+            <form method="POST" action="{% url 'asset_create' %}" enctype="multipart/form-data">
+                {% csrf_token %}                 
+                {% for field in form %}
+                    {% if field.name == 'images' %}
+                        <div id="dynamic-fields">
+                            {{ field|as_crispy_field }}
+                        </div>
+                    {% else %}
+                        {{ field|as_crispy_field }}
+                    {% endif %}
+                {% endfor %}
+
+                <div class="text-right">
+                    <button type="button" class="btn btn-warning m-3" onclick="addFormField()">+ Add Image</button>
+                    <button type="button" class="btn btn-danger m-3" onclick="removeFormField()">- Remove Image</button>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block extrajs %}
+<script>
+    function addFormField() {
+        var dynamicFields = document.getElementById("dynamic-fields");
+        var imageCount = document.getElementsByName('images').length;
+        if (imageCount > 4) {
+            alert("You can only add up to 5 images.");
+            return;
+        }
+        var newField = document.createElement("div");
+        newField.innerHTML = '{{ form.images }}';
+        dynamicFields.appendChild(newField);
+    }
+
+    function removeFormField() {
+        var dynamicFields = document.getElementById("dynamic-fields");
+        var imageCount = document.getElementsByName('images').length;
+        if (imageCount == 1) {
+            alert("You must have at least 1 image.");
+            return;
+        }
+        dynamicFields.removeChild(dynamicFields.lastChild);
+    }
+</script>
+
+{% endblock extrajs %}
+{% endblock main_content %}

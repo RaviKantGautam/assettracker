@@ -1,0 +1,7 @@
+MYSQL_DATABASE=asset_tracker
+MYSQL_USER=root
+MYSQL_PASSWORD=p@ssw0rd
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+DATABASE_URL=mysql://root:p@ssw0rd@127.0.0.1:3306/asset_tracker
+MYSQL_ROOT_PASSWORD=root

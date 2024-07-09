@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: ./docker/local/django/Dockerfile
+        command: /start
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/app:z
+            - static_volume:/app/static
+            - media_volume:/app/media
+        expose:
+            - "8000"
+        env_file:
+            - ./.envs/.local/.django
+            - ./.envs/.local/.mysql
+        depends_on:
+            - mysql
+        networks:
+            - app-network
+
+    mysql:
+        build:
+            context: .
+            dockerfile: ./docker/local/mysql/Dockerfile
+        volumes:
+            - mysql_data:/var/lib/mysql/data2
+        env_file:
+            - ./.envs/.local/.mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - app-network
+       
+
+    nginx:
+        restart: always
+        depends_on:
+            - app
+        volumes:
+            - static_volume:/app/static
+            - media_volume:/app/media
+        build:
+            context: ./docker/local/nginx
+            dockerfile: Dockerfile
+        ports:
+            - "8080:80"
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    static_volume:
+    media_volume:
+    mysql_data: {}

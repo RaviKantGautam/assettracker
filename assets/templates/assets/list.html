@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<div class="table-responsive p-5">
+  {% if messages %}
+    {% include "_message_.html" %}
+  {% endif %}
+
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-primary" onclick="window.location.href='{% url 'asset_create' %}'">Create New</button>
+    <a href="{% url 'generate_csv' %}" class="btn btn-success">Download csv</a>
+  </div>
+  <hr>
+  <table id="datatable_assets" class="table border table-hover"></table>
+  <hr>
+
+  </div>
+
+
+
+{% endblock %}
+{% block extrajs %}
+  <script>
+    $(document).ready(function () {
+      $('#datatable_assets').DataTable({
+        processing: true,
+        serverSide: true,        
+        ajax: "{% url 'ajax_datatable_assets' %}",
+        columns: [
+          { data: 'name', title: 'Name' },
+          { data: 'code', title: 'Code' },
+          { data: 'asset_type', title: 'Asset Type' },
+          { data: 'status', title: 'Status' },
+          { data: 'created_at', title: 'Created At' },
+          { data: 'updated_at', title: 'Updated At'},
+          { data: 'edit', title: 'Actions' }
+        ],
+        order: [[4, 'desc']]
+      })
+    })
+  </script>
+{% endblock %}

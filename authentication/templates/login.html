@@ -1,0 +1,41 @@
+{% extends 'base_page.html' %}
+{% load static %}
+{% block content %}
+  <div class="login-page bg-body-secondary">
+    <div class="login-box">
+      <div class="login-logo">Asset Tracker</div>
+      <div class="card">
+        <div class="card-body login-card-body">
+          <p class="login-box-msg">Log-in</p>
+          <form method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              {{ form.email }}
+              <div class="input-group-text">
+                <span class="bi bi-envelope"></span>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              {{ form.password }}
+              <div class="input-group-text">
+                <span class="bi bi-lock-fill"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8">
+                <div class="form-check">
+                  {{ form.remember_me }} <label class="form-check-label" for="flexCheckDefault">{{ form.remember_me.label }}</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

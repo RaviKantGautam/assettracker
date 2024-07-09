@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block main_content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 bg-white p-5 mt-5 border-rounded shadow">    
+      <a href="{% url 'asset_type_list' %}" class="btn btn-secondary">Back</a>    
+      <hr>   
+      {% if messages %}
+          {% include "_message_.html" %}
+      {% endif %}  
+      <table class="table">
+        <tr>
+          <th>Name</th>
+          <td><u>{{ object.name|title }}</u></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td>{{ object.description|title }}</td>
+        </tr>
+      </table>      
+      <div class="d-flex justify-content-between">        
+         <button class="btn btn-success" onclick="window.location.href='{% url 'asset_type_update' object.id %}'">Edit</button>
+          {% csrf_token %}
+          <button id="delete-btn" class="btn btn-danger">Delete</button>        
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main_content %}
+
+{% block extrajs %}
+<script>
+    document.getElementById('delete-btn').addEventListener('click', function() {
+        if (confirm('Are you sure? If you delete this asset type, all assets under this asset type will be deleted too!')) {
+            // Create an AJAX request to perform the delete operation
+            var assetTypeId = {{ object.id }};
+            var url = "{% url 'asset_type_detail' object.id %}";
+            var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-CSRFToken", csrfToken);
+
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                window.location.href = "{% url 'asset_type_list' %}";
+              }
+            };
+
+            xhr.send(JSON.stringify({ id: assetTypeId }));
+        }
+    });
+</script>
+{% endblock extrajs %}

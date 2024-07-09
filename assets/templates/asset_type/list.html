@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+  <div class="table-responsive p-5">
+    <table id="datatable_asset_type" class="table border table-hover"></table>
+    <button class="btn btn-primary" onclick="window.location.href='{% url 'asset_type_create' %}'">Create New</button>
+  </div>
+{% if messages %}
+    {% include "_message_.html" %}
+{% endif %}
+{% endblock %}
+{% block extrajs %}
+  <script>
+    $(document).ready(function () {
+      $('#datatable_asset_type').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{% url 'ajax_datatable_asset_types' %}",
+        columns: [
+          { data: 'name', title: 'Name' },
+          { data: 'created_at', title: 'Created At'},
+          { data: 'updated_at', title: 'Updated At' },
+          { data: 'edit', title: 'Actions' }
+        ],
+        order: [[1, 'desc']]
+      })
+    })
+  </script>
+{% endblock %}

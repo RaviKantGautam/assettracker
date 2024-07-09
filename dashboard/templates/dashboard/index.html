@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+  <main class="app-main">
+    <div class="app-content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <h3 class="mb-0">Dashboard</h3>
+          </div>          
+        </div> <!-- end::Row -->
+      </div> <!-- end::Container -->
+    </div>
+    <div class="app-content">
+      <!-- begin::Container -->
+      <div class="container-fluid">
+        <!-- begin::Row -->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                  <h3 class="card-title">Assets Count</h3>
+                </div> <!-- /.card-header -->
+                <div class="card-body">
+                  <!-- begin::Row -->
+                  <div class="row">
+                    <div class="col-12">
+                      <div id="pie-chart" data-value="asset_type_analytic={{asset_type_analytic}}"></div>
+                    </div> <!-- /.col -->
+                  </div> <!-- end::Row -->
+                </div> <!-- /.card-body -->                            
+            </div> <!-- /.card -->
+          </div> <!-- /.col-md-6 -->
+          <div class="col-lg-6">
+            <div class="card mb-4">
+              <div class="card-header border-0">
+                <h3 class="card-title">Aseets Status</h3>
+              </div>
+              <div class="card-body"> <!-- /.d-flex -->
+                <div class="position-relative mb-4">
+                  <div id="bar-chart" data-value="assets_status={{assets_status}}"></div>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+  // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
+  // IT'S ALL JUST JUNK FOR DEMO
+  // ++++++++++++++++++++++++++++++++++++++++++
+
+  //--------------
+  // - BAR CHART -
+  //--------------
+
+  let assets_status_data = document.querySelector("#bar-chart").dataset.value.replace('assets_status=', '').trim();
+  assets_status_data = assets_status_data.replace(/'/g, '"');
+  const assets_status = JSON.parse(assets_status_data);
+  const active_assets = assets_status['active_count']; 
+  const inactive_assets = assets_status['inactive_count'];
+
+  const bar_chart_options = {
+      series: [
+          {
+              name: "Active Assets",
+              data: [active_assets],
+          },
+          {
+              name: "Inactive Assets",
+              data: [inactive_assets],
+          },
+      ],
+      chart: {
+          type: "bar",
+          height: 350,
+      },
+      plotOptions: {
+          bar: {
+              horizontal: false,
+              columnWidth: "55%",
+              endingShape: "rounded",
+          },
+      },
+      dataLabels: {
+          enabled: false,
+      },
+      stroke: {
+          show: true,
+          width: 2,
+          colors: ["transparent"],
+      },
+      xaxis: {
+          categories: ["Assets"],
+      },
+      yaxis: {
+          title: {
+              text: "Number of Assets",
+          },
+      },
+      fill: {
+          opacity: 1,
+      },
+      tooltip: {
+          y: {
+              formatter: function (val) {
+                  return val;
+              },
+          },
+      },
+  };
+
+  const bar_chart = new ApexCharts(
+      document.querySelector("#bar-chart"),
+      bar_chart_options
+  );
+  bar_chart.render();
+  //---------------------
+  // - END BAR CHART -
+  //-----------------
+
+
+
+
+  //-------------
+  // - PIE CHART -
+  //-------------
+
+  data = document.querySelector("#pie-chart").dataset.value;
+  data = data.replace('asset_type_analytic=', '').trim();
+  data = data.replace(/'/g, '"');
+  const asset_type_analytic = JSON.parse(data);
+
+  const pie_chart_options = {
+      series: Object.values(asset_type_analytic),
+      chart: {
+          type: "donut",
+      },
+      labels: Object.keys(asset_type_analytic).map(label => label.replace(/_/g, ' ').toUpperCase()),
+      dataLabels: {
+          enabled: false,
+      }            
+  };
+
+  const pie_chart = new ApexCharts(
+      document.querySelector("#pie-chart"),
+      pie_chart_options,
+  );
+  pie_chart.render();
+
+  //-----------------
+  // - END PIE CHART -
+  //-----------------
+</script> <!--end::Script-->
+{% endblock extrajs %}

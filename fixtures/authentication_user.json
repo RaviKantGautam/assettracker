@@ -1,0 +1,19 @@
+[
+    {
+        "model": "authentication.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$720000$5HVN4zPVlTNmwiwv3OjY28$xDa7/TEoS0D5H5ChVsGCZH10v51nEhLX4uxJVuUfiN8=",
+            "last_login": "2024-07-03T09:12:31.841Z",
+            "is_superuser": true,
+            "first_name": "",
+            "last_name": "",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-07-03T09:09:16.626Z",
+            "email": "systemadmin@neosoftmail.com",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

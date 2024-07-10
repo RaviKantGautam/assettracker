@@ -1,8 +1,8 @@
 FROM mysql:8.0
 
-COPY ./docker/local/mysql/maintenance /usr/local/bin/maintenance
+# Set the working directory
+WORKDIR /usr/src/app
 
-RUN chmod +x /usr/local/bin/maintenance/*
+# Expose the MySQL port
+EXPOSE 3306
 
-RUN mv /usr/local/bin/maintenance/* /usr/local/bin \
-  && rmdir /usr/local/bin/maintenance

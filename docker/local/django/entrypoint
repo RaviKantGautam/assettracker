@@ -15,23 +15,28 @@ python << END
 import sys
 import time
 import mysql.connector
+from mysql.connector import Error
 
 suggest_unrecoverable_after = 30
 start = time.time()
 while True:
   try:
-    mysql.connector.connect(
-      db="${MYSQL_DATABASE}",
-      user="${MYSQL_USER}",
-      password="${MYSQL_PASSWORD}",
-      host="${MYSQL_HOST}",
-      port=int("${MYSQL_PORT}"),
-    )
-    break
-  except Exception as error:
-    sys.stderr.write("Waiting for MySQL to become available...\n")
-    if time.time() - start > suggest_unrecoverable_after:
-      sys.stderr.write(" This is taking longer than expected. The following exception may be indicative of an unrecoverable error: '{}'\n".format(error))
+      connection = mysql.connector.connect(
+          host="${MYSQL_HOST}",
+          port="${MYSQL_PORT}",
+          database="${MYSQL_DATABASE}",
+          user="${MYSQL_USER}",
+          password="${MYSQL_PASSWORD}",
+      )
+      if connection.is_connected():
+          print("Connection to MySQL database was successful")
+          break
+  except Error as e:
+      print(f"Error: {e}")
+  finally:
+      if connection.is_connected():
+          connection.close()
+          print("MySQL connection is closed")
   time.sleep(1)
 END
 

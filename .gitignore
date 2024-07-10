@@ -121,7 +121,4 @@ venv/
 .venv/
 .env
 .DS_Store
-.envs/.local/*.django
-.envs/.local/*.mysql
-.envs/.production/*.django
-.envs/.production/*.mysql
+.envs/

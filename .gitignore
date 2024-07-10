@@ -121,4 +121,5 @@ venv/
 .venv/
 .env
 .DS_Store
-.envs/
+.envs/.local/*
+.envs/.production/*

@@ -29,8 +29,12 @@
         columns: [
           { data: 'name', title: 'Name' },
           { data: 'code', title: 'Code' },
-          { data: 'asset_type', title: 'Asset Type' },
-          { data: 'status', title: 'Status' },
+          { data: 'asset_type', title: 'Asset Type' },          
+          { data: 'status', title: 'Status',
+            render: function(data) {              
+              return data == "Yes" ? 'Active' : 'Inactive';
+            }
+          },        
           { data: 'created_at', title: 'Created At' },
           { data: 'updated_at', title: 'Updated At'},
           { data: 'edit', title: 'Actions' }

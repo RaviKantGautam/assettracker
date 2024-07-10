@@ -7,16 +7,25 @@
       <div class="card">
         <div class="card-body login-card-body">
           <p class="login-box-msg">Log-in</p>
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
           <form method="post">
             {% csrf_token %}
             <div class="input-group mb-3">
               {{ form.email }}
+              {{ form.email.errors }}
               <div class="input-group-text">
                 <span class="bi bi-envelope"></span>
               </div>
             </div>
             <div class="input-group mb-3">
               {{ form.password }}
+              {{ form.password.errors }}
               <div class="input-group-text">
                 <span class="bi bi-lock-fill"></span>
               </div>

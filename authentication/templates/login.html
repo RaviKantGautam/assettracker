@@ -18,18 +18,22 @@
             {% csrf_token %}
             <div class="input-group mb-3">
               {{ form.email }}
-              {{ form.email.errors }}
               <div class="input-group-text">
                 <span class="bi bi-envelope"></span>
               </div>
             </div>
+              {% if form.email.errors %}
+                 <div> {{ form.email.errors }}</div>
+              {% endif %}
             <div class="input-group mb-3">
               {{ form.password }}
-              {{ form.password.errors }}
               <div class="input-group-text">
                 <span class="bi bi-lock-fill"></span>
               </div>
             </div>
+            {% if form.password.errors %}
+                <div> {{ form.password.errors }}</div>
+            {% endif %}
             <div class="row">
               <div class="col-8">
                 <div class="form-check">

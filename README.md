@@ -19,11 +19,37 @@ To run this project locally, follow these steps:
 
 1. Clone the repository: `git clone [repository URL]` or extract the .zip folder
 2. Navigate to the project directory: `cd asset_tracker`
-3. cp .env.example > .env
-4. Set the enviroment variable value in .env file.
-3. Install the project dependencies: `pip install -r requriements/development.txt`
-4. Apply database migrations: `python manage.py migrate`
-5. Start the development server: `python manage.py runserver`
+3. cp .env.example .env
+MY_VARIABLE=my_value
+ANOTHER_VARIABLE=another_value
+5. Run and activate python virtual environment according to the os.
+6. Install the project dependencies: `pip install -r requriements/development.txt`
+7. Apply database migrations: `python manage.py migrate`
+8. Start the development server: `python manage.py runserver`
+
+
+## Installation with docker
+
+To run this project locally in docker using docker-compose, follow these steps:
+
+1. Create file .django and .mysql file under directory ./envs/.local/
+2. Set the environment variable 
+    .django: 
+        - DOMAIN
+        - SECRET_KEY
+        - DEBUG=True
+        - DATABASE_URL
+    
+    .mysql:
+        - MYSQL_DATABASE
+        - MYSQL_USER
+        - MYSQL_PASSWORD
+        - MYSQL_ROOT_PASSWORD
+        - MYSQL_HOST
+        - MYSQL_PORT
+3. Run `sudo make build`
+Note: make sure ports used in local.yml should not conflict with local system ports.
+
 
 ## Usage
 

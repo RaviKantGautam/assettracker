@@ -20,6 +20,7 @@ export MYSQL_PWD="${MYSQL_PASSWORD}"
 
 backup_filename="${BACKUP_FILE_PREFIX}_$(date +'%Y_%m_%dT%H_%M_%S').sql.gz"
 
+
 mysqldump -h"${MYSQL_HOST}" -P"${MYSQL_PORT}" -u"${MYSQL_USER}" "${MYSQL_DATABASE}" | gzip > "${BACKUP_DIR_PATH}/${backup_filename}"
 
 message_success "'${MYSQL_DATABASE}' database backup '${backup_filename}' has been created successfully and placed in '${BACKUP_DIR_PATH}'"
